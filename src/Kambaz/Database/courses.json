@@ -1,0 +1,83 @@
+[
+  {
+    "_id": "CS101",
+    "name": "CS1234 React JS",
+    "number": "CS1234",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "C123",
+    "credits": 4,
+    "description": "Full Stack software development"
+  },
+  {
+    "_id": "CS102",
+    "name": "CS1235 Fundies I",
+    "number": "CS1235",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "C123",
+    "credits": 4,
+    "description": "Fundamentals of Computer Science I"
+  },
+  {
+    "_id": "CS103",
+    "name": "CS1236 Fundies II",
+    "number": "CS1236",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "C123",
+    "credits": 4,
+    "description": "Fundamentals of Computer Science II"
+  },
+  {
+    "_id": "CS104",
+    "name": "CS1237 Computer Systems",
+    "number": "CS1237",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "C123",
+    "credits": 4,
+    "description": "Fundamentals of Computer Systems"
+  },
+  {
+    "_id": "CS105",
+    "name": "CS1239 Human Computer Interaction",
+    "number": "CS1239",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "C123",
+    "credits": 4,
+    "description": "Fundamentals of Human Centered Computing"
+  },
+  {
+    "_id": "IS101",
+    "name": "IS1238 Information Science",
+    "number": "IS1238",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "I123",
+    "credits": 4,
+    "description": "Fundamentals of Information Science"
+  },
+  {
+    "_id": "IS102",
+    "name": "IS1240 Empirical Research Methods",
+    "number": "IS1240",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "I123",
+    "credits": 4,
+    "description": "Fundamentals of Conducting Empirical Research"
+  },
+  {
+    "_id": "DS101",
+    "name": "DS1241 Data Science",
+    "number": "DS1241",
+    "startDate": "2023-01-10",
+    "endDate": "2023-05-15",
+    "department": "D123",
+    "credits": 4,
+    "description": "Fundamentals of Data Science"
+  }
+]
+
