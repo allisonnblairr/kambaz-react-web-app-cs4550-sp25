@@ -4,6 +4,7 @@ import * as db from "../../Database";
 
 export default function AssignmentEditor() {
   const { aid } = useParams();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const assignment = db.assignments.find((asmnt: any) => asmnt._id === aid);
     return (
       <div id="wd-assignments-editor">

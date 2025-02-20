@@ -4,7 +4,7 @@ export default function CourseNavigation() {
   const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
   const { cid } = useParams();
   const location = useLocation();
-  const isActive = (link) => {
+  const isActive = (link: string) => {
     const linkPath = `/Kambaz/Courses/${cid}/${link}`;
     return location.pathname === linkPath;
   };
