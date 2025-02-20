@@ -1,4 +1,4 @@
-import { FormSelect } from "react-bootstrap";
+import { Button, FormSelect } from "react-bootstrap";
 import Form from "react-bootstrap/esm/Form";
 import { Link } from "react-router-dom";
 export default function Profile() {
@@ -29,6 +29,11 @@ export default function Profile() {
                     <option value="ADMIN">Admin</option>
                     <option value="STUDENT">Student</option>
       </FormSelect>
-      <Link id="wd-signin-link" to="/Kambaz/Account/Signin" >Sign out</Link>
+      <Link id="wd-signin-link"
+            to="/Kambaz/Account/Signin"
+            className="mb-2">
+            <Button variant="danger" className="w-100">
+            Signout
+      </Button></Link>
     </div>
 );}

@@ -1,9 +1,10 @@
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import courses from './database/courses.json';
+import * as db from "./Database";
 
 export default function Dashboard() {
   const imgSources = ["/images/reactjs.jpg", "/images/racket.jpg", "/images/java.jpg", "/images/c.jpg", "/images/ui.jpg", "/images/r.jpg", "/images/statistics.jpg", "/images/python.jpg" ]
+  const courses = db.courses;
   return (
       <div id="wd-dashboard">
         <h1 id="wd-dashboard-title">Dashboard</h1> <hr />

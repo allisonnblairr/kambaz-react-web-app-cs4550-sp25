@@ -1,20 +1,24 @@
 import { FormGroup, FormLabel, FormControl, Form, Col, Row, Button } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
+import * as db from "../../Database";
 
 export default function AssignmentEditor() {
+  const { aid } = useParams();
+  const assignment = db.assignments.find((asmnt: any) => asmnt._id === aid);
     return (
       <div id="wd-assignments-editor">
         <FormGroup className="mb-3 wd-name" controlId="wd-textarea">
                 <FormLabel>Assignment Name</FormLabel>
-                <FormControl as="textarea" rows={3} value="A1 - ENV + HTML" className="custom-textarea wd-name"/>
+                <FormControl as="textarea" rows={3} value={`${assignment?.title}`} className="custom-textarea wd-name"/>
         </FormGroup>
         <div className="textarea-wrapper p-3 border rounded-3 wd-description" style={{height: '100px'}}>
-        The assignment is available online Submit a link to the landing page of ...
+        {assignment?.description}
         </div>
         <div> 
         <Form.Group as={Row} className="mb-3">
                         <Form.Label column sm={3} className="text-end wd-points"> Points </Form.Label>
                         <Col sm={9}>
-                            <Form.Control type="textarea" value={100} className="wd-points"/>
+                            <Form.Control type="textarea" value={assignment?.pts} className="wd-points"/>
                         </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-3">
@@ -91,16 +95,16 @@ export default function AssignmentEditor() {
                             </div>
                             <div>
                               <label className="wd-due-date"><strong>Due</strong></label>
-                              <Form.Control type="date" value="10/20/2020" className="wd-due-date"/>
+                              <Form.Control type="date" defaultValue="10/20/2020" className="wd-due-date"/>
                             </div>
                             <div className="d-flex gap-5">
                               <div> 
                               <label className="wwd-available-from"><strong>Available From</strong></label>
-                              <Form.Control type="date" value="10/20/2020" className="wwd-available-from"/>
+                              <Form.Control type="date" defaultValue="10/20/2020" className="wwd-available-from"/>
                               </div>
                               <div> 
                               <label className="wd-available-until"><strong>Until</strong></label>
-                              <Form.Control type="date" value="10/20/2020" className="wd-available-until"/>
+                              <Form.Control type="date" defaultValue="10/20/2020" className="wd-available-until"/>
                               </div>                             
                             </div>
                           </div>
@@ -109,12 +113,14 @@ export default function AssignmentEditor() {
         </div>
         <hr></hr>
         <div className="float-end d-flex">
+        <Link to={`/Kambaz/Courses/${assignment?.course}/Assignments`} className="wd-assignment-page-link">
         <Button variant="secondary" size="sm" className="me-1 float-end border-dark rounded-0" id="wd-cancel">
-          Cancel
-        </Button>
+        Cancel
+        </Button></Link>
+        <Link to={`/Kambaz/Courses/${assignment?.course}/Assignments`} className="wd-assignment-page-link">
         <Button variant="danger" size="sm" className="me-1 float-end border-dark rounded-0" id="wd-save">
-          Save
-        </Button>
+         Save
+        </Button></Link>
         </div>
       </div>
   );}
