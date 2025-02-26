@@ -7,7 +7,8 @@
     "endDate": "2023-05-15",
     "department": "C123",
     "credits": 4,
-    "description": "Full Stack software development"
+    "description": "Full Stack software development",
+    "image": "/images/reactjs.jpg"
   },
   {
     "_id": "CS102",
@@ -17,7 +18,8 @@
     "endDate": "2023-05-15",
     "department": "C123",
     "credits": 4,
-    "description": "Fundamentals of Computer Science I"
+    "description": "Fundamentals of Computer Science I",
+    "image": "/images/racket.jpg"
   },
   {
     "_id": "CS103",
@@ -27,7 +29,8 @@
     "endDate": "2023-05-15",
     "department": "C123",
     "credits": 4,
-    "description": "Fundamentals of Computer Science II"
+    "description": "Fundamentals of Computer Science II",
+    "image": "/images/java.jpg"
   },
   {
     "_id": "CS104",
@@ -37,7 +40,8 @@
     "endDate": "2023-05-15",
     "department": "C123",
     "credits": 4,
-    "description": "Fundamentals of Computer Systems"
+    "description": "Fundamentals of Computer Systems",
+    "image": "/images/c.jpg"
   },
   {
     "_id": "CS105",
@@ -47,7 +51,8 @@
     "endDate": "2023-05-15",
     "department": "C123",
     "credits": 4,
-    "description": "Fundamentals of Human Centered Computing"
+    "description": "Fundamentals of Human Centered Computing",
+    "image": "/images/ui.jpg"
   },
   {
     "_id": "IS101",
@@ -57,7 +62,8 @@
     "endDate": "2023-05-15",
     "department": "I123",
     "credits": 4,
-    "description": "Fundamentals of Information Science"
+    "description": "Fundamentals of Information Science",
+    "image": "/images/r.jpg"
   },
   {
     "_id": "IS102",
@@ -67,7 +73,8 @@
     "endDate": "2023-05-15",
     "department": "I123",
     "credits": 4,
-    "description": "Fundamentals of Conducting Empirical Research"
+    "description": "Fundamentals of Conducting Empirical Research",
+    "image": "/images/statistics.jpg"
   },
   {
     "_id": "DS101",
@@ -77,7 +84,8 @@
     "endDate": "2023-05-15",
     "department": "D123",
     "credits": 4,
-    "description": "Fundamentals of Data Science"
+    "description": "Fundamentals of Data Science",
+    "image": "/images/python.jpg"
   }
 ]
 
