@@ -18,7 +18,8 @@ const modulesSlice = createSlice({
       state.modules = [...state.modules, newModule] as any;
     },
     deleteModule: (state, { payload: moduleId }) => {
-      state.modules = state.modules.filter((m: any) => m._id !== moduleId);
+      state.modules = state.modules.filter(
+        (m: any) => m._id !== moduleId);
     },
     updateModule: (state, { payload: module }) => {
       state.modules = state.modules.map((m: any) =>
