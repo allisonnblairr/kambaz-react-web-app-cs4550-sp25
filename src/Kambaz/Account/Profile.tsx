@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, FormControl } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "./reducer";
 export default function Profile() {
@@ -8,15 +9,15 @@ export default function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const fetchProfile = () => {
+  const fetchProfile = useCallback(() => {
     if (!currentUser) return navigate("/Kambaz/Account/Signin");
     setProfile(currentUser);
-  };
+  }, [currentUser, navigate]);
   const signout = () => {
     dispatch(setCurrentUser(null));
     navigate("/Kambaz/Account/Signin");
   };
-  useEffect(() => { fetchProfile(); }, []);
+  useEffect(() => { fetchProfile(); }, [fetchProfile]);
   return (
     <div id="wd-profile-screen">
       <h3>Profile</h3>

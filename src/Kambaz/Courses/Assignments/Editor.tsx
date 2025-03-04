@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormGroup, FormLabel, FormControl, Form, Col, Row, Button } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { addAssignment, updateAssignment } from "./reducer";

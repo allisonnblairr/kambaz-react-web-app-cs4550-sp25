@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
 export default function EventObject() {
   const [event, setEvent] = useState(null);
   const handleClick = (e: any) => {

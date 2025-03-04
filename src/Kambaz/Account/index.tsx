@@ -5,6 +5,7 @@ import Signin from "./Signin";
 import AccountNavigation from "./Navigation";
 import { useSelector } from "react-redux";
 export default function Account() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { currentUser } = useSelector((state: any) => state.accountReducer);
     return (
       <div id="wd-account-screen">

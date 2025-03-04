@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Route, Routes, useParams, useLocation } from "react-router-dom";
 import CourseNavigation from "./Navigation";
 import Modules from "./Modules";

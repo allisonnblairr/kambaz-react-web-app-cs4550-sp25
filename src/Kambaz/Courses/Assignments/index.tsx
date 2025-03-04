@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BsGripVertical } from "react-icons/bs";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import AssignmentControls from "./AssignmentControls";
@@ -17,11 +18,18 @@ export default function Assignments() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
 
-  function formatDate(dateString) {
+  function formatDate(dateString: any) {
     const date = new Date(dateString);
-    const options = { month: "long", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true, timeZone: "UTC" };
+    const options: Intl.DateTimeFormatOptions = { 
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "UTC"
+    };
     return date.toLocaleString("en-US", options);
-  }
+}
   
   return (
     <div>

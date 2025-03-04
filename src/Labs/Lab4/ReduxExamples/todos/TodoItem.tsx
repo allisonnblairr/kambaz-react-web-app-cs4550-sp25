@@ -1,8 +1,7 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useDispatch } from "react-redux";
 import { deleteTodo, setTodo } from "./todosReducer";
-export default function TodoItem({ todo,
- }) {
+export default function TodoItem({ todo }: { todo: any }) {
   const dispatch = useDispatch();
   return (
     <li key={todo.id} className="list-group-item d-flex gap-3">

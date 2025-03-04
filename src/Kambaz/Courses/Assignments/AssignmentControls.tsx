@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FaPlus } from "react-icons/fa6";
 import { Button, Form } from "react-bootstrap";
 import { CiSearch } from "react-icons/ci";

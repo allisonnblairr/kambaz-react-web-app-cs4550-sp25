@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function AccountNavigation() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   //const links = currentUser ? ["Profile"] : ["Signin", "Signup"];
   //const { pathname } = useLocation();
