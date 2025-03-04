@@ -1,7 +1,8 @@
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import * as db from "./Database";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { toggleEnrollment } from "./Courses/reducer";
 
 export default function Dashboard(
   { courses, course, setCourse, addNewCourse,
@@ -11,16 +12,25 @@ export default function Dashboard(
     updateCourse: () => void; })
    {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const { enrollments } = db;
+  const { enrollments } = useSelector((state: any) => state.enrollmentReducer);
+  const [showAllCourses, setShowAllCourses] = useState(false);
+  const dispatch = useDispatch();
+
+  const isEnrolled = (courseId: string) => 
+    enrollments.some((enrollment: any) => enrollment.user === currentUser._id && enrollment.course === courseId);
+
+  const toggleEnrollmentView = () => setShowAllCourses(!showAllCourses);
   return (
       <div id="wd-dashboard">
-        <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-        <h2 id="wd-dashboard-published">Published Courses ({courses.filter((course) =>
-              enrollments.some(
-                (enrollment) =>
-                  enrollment.user === currentUser._id &&
-                  enrollment.course === course._id
-                )).length})</h2> <hr />
+        <h1 id="wd-dashboard-title">Dashboard</h1> 
+        {currentUser.role === 'STUDENT' &&
+          <Button className="btn btn-primary position-absolute top-0 end-0 m-3"
+          onClick={toggleEnrollmentView}>
+            Enrollments
+          </Button>
+        }
+        <hr />
+        <h2 id="wd-dashboard-published">Published Courses ({courses.filter((course) => isEnrolled(course._id)).length})</h2> <hr />
         { currentUser.role === 'FACULTY' &&
           <><h5>New Course
           <button className="btn btn-primary float-end"
@@ -38,16 +48,18 @@ export default function Dashboard(
           <Row xs={1} md={5} className="g-4">
             {courses
             .filter((course) =>
-              enrollments.some(
-                (enrollment) =>
-                  enrollment.user === currentUser._id &&
-                  enrollment.course === course._id
-                ))
+              (showAllCourses ? true : isEnrolled(course._id)))
             .map((course) => (
               <Col className="wd-dashboard-course" style={{ width: "300px" }}>
                 <Card>
-                  <Link to={`/Kambaz/Courses/${course._id}/Home`}
-                        className="wd-dashboard-course-link text-decoration-none text-dark" >
+                  <Link to={isEnrolled(course._id) ? `/Kambaz/Courses/${course._id}/Home` : "#"}
+                    className="wd-dashboard-course-link text-decoration-none text-dark"
+                    onClick={(e) => {
+                      if (!isEnrolled(course._id)) {
+                        e.preventDefault();
+                        alert("You cannot access this course until you are enrolled.");
+                      }
+                    }} >
                     <Card.Img src={`${course.image}`} variant="top" width="100%" height={160} />
                     <Card.Body className="card-body">
                       <Card.Title className="wd-dashboard-course-title text-nowrap overflow-hidden">
@@ -55,6 +67,14 @@ export default function Dashboard(
                       <Card.Text className="wd-dashboard-course-description overflow-hidden" style={{ height: "100px" }}>
                         {course.description} </Card.Text>
                       <Button variant="primary"> Go </Button>
+                      { currentUser.role === 'STUDENT' &&
+                      <Button
+                      className={`btn float-end ${isEnrolled(course._id) ? "btn-danger" : "btn-success"}`}
+                      onClick={() => dispatch(toggleEnrollment({ user: currentUser._id, course: course._id }))}
+                    >
+                      {isEnrolled(course._id) ? "Unenroll" : "Enroll"}
+                    </Button>
+                      }
                       { currentUser.role === 'FACULTY' &&
                       <><button onClick={(event) => {
                           event.preventDefault();

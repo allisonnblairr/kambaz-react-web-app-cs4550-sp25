@@ -1,25 +1,43 @@
 import { FormGroup, FormLabel, FormControl, Form, Col, Row, Button } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
-import * as db from "../../Database";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { addAssignment, editAssignment, updateAssignment } from "./reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 export default function AssignmentEditor() {
-  const { aid } = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const assignment = db.assignments.find((asmnt: any) => asmnt._id === aid);
+  const { aid, cid } = useParams<{ aid: string; cid: string }>();
+  const [assignment, setAssignment] = useState<any>({});
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [editingMode, setEditingMode] = useState(false);
+  
+  useEffect(() => {
+    const foundAssignment = assignments.find((asmnt: any) => asmnt._id === aid);
+    if (foundAssignment) {
+      setAssignment(foundAssignment);
+      setEditingMode(true);
+    }
+  }, [aid, assignments]);
+
     return (
       <div id="wd-assignments-editor">
         <FormGroup className="mb-3 wd-name" controlId="wd-textarea">
                 <FormLabel>Assignment Name</FormLabel>
-                <FormControl as="textarea" rows={3} value={`${assignment?.title}`} className="custom-textarea wd-name"/>
+                <FormControl as="textarea" rows={3} value={assignment?.title || ""} className="custom-textarea wd-name"
+                onChange={(e) => setAssignment({ ...assignment, title:  e.target.value })}/>
         </FormGroup>
-        <div className="textarea-wrapper p-3 border rounded-3 wd-description" style={{height: '100px'}}>
-        {assignment?.description}
-        </div>
+        <FormGroup className="textarea-wrapper p-3 border rounded-3 wd-description" controlId="wd-textarea" style={{height: '100px'}}>
+                <FormLabel>Assignment Description</FormLabel>
+                <FormControl as="textarea" rows={3} value={assignment?.description || ""} className="custom-textarea wd-description"
+                onChange={(e) => setAssignment({ ...assignment, description:  e.target.value })}/>
+        </FormGroup>
         <div> 
         <Form.Group as={Row} className="mb-3">
                         <Form.Label column sm={3} className="text-end wd-points"> Points </Form.Label>
                         <Col sm={9}>
-                            <Form.Control type="textarea" value={assignment?.pts} className="wd-points"/>
+                            <Form.Control type="textarea" value={assignment?.pts || ""} className="wd-points"
+                            onChange={(e) => setAssignment({ ...assignment, pts: e.target.value })}/>
                         </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-3">
@@ -96,16 +114,19 @@ export default function AssignmentEditor() {
                             </div>
                             <div>
                               <label className="wd-due-date"><strong>Due</strong></label>
-                              <Form.Control type="date" defaultValue="10/20/2020" className="wd-due-date"/>
+                              <Form.Control type="date" value={assignment?.due || ""} className="wd-due-date"
+                              onChange={(e) => setAssignment({ ...assignment, due: e.target.value })}/>
                             </div>
                             <div className="d-flex gap-5">
                               <div> 
                               <label className="wwd-available-from"><strong>Available From</strong></label>
-                              <Form.Control type="date" defaultValue="10/20/2020" className="wwd-available-from"/>
+                              <Form.Control type="date" value={assignment?.from || ""} className="wwd-available-from"
+                              onChange={(e) => setAssignment({ ...assignment, from: e.target.value })}/>
                               </div>
                               <div> 
                               <label className="wd-available-until"><strong>Until</strong></label>
-                              <Form.Control type="date" defaultValue="10/20/2020" className="wd-available-until"/>
+                              <Form.Control type="date" value={assignment?.until || ""} className="wd-available-until"
+                              onChange={(e) => setAssignment({ ...assignment, until: e.target.value })}/>
                               </div>                             
                             </div>
                           </div>
@@ -114,14 +135,27 @@ export default function AssignmentEditor() {
         </div>
         <hr></hr>
         <div className="float-end d-flex">
-        <Link to={`/Kambaz/Courses/${assignment?.course}/Assignments`} className="wd-assignment-page-link">
+        <Link to={`/Kambaz/Courses/${cid}/Assignments`} className="wd-assignment-page-link">
         <Button variant="secondary" size="sm" className="me-1 float-end border-dark rounded-0" id="wd-cancel">
         Cancel
         </Button></Link>
-        <Link to={`/Kambaz/Courses/${assignment?.course}/Assignments`} className="wd-assignment-page-link">
-        <Button variant="danger" size="sm" className="me-1 float-end border-dark rounded-0" id="wd-save">
+        <Button variant="danger" size="sm" className="me-1 float-end border-dark rounded-0" id="wd-save"
+        onClick={() => { if (editingMode) {
+          dispatch(updateAssignment(assignment))
+        } else {
+          dispatch(addAssignment({ 
+            title: assignment.title, 
+            description: assignment.description,
+            course: cid,
+            pts: assignment.pts,
+            due: assignment.due,
+            from: assignment.from,
+            until: assignment.until }));
+        }
+        navigate(`/Kambaz/Courses/${cid}/Assignments`);
+         }}>
          Save
-        </Button></Link>
+        </Button>
         </div>
       </div>
   );}
