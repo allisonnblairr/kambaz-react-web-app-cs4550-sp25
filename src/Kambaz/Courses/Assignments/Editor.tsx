@@ -4,6 +4,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { addAssignment, updateAssignment } from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
 
 export default function AssignmentEditor() {
   const { aid, cid } = useParams<{ aid: string; cid: string }>();
@@ -12,6 +14,23 @@ export default function AssignmentEditor() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [editingMode, setEditingMode] = useState(false);
+  const createAssignmentForCourse = async () => {
+    if (!cid) return;
+    const newAssignment = { 
+      title: assignment.title, 
+      course: cid,
+      description: assignment.description,
+      pts: assignment.pts,
+      due: assignment.due,
+      from: assignment.from,
+      until: assignment.until };
+    const returnedAssignment = await coursesClient.createAssignmentForCourse(cid, newAssignment);
+    dispatch(addAssignment(returnedAssignment));
+  };
+  const saveAssignment = async (assignment: any) => {
+    await assignmentsClient.updateAssignment(assignment);
+    dispatch(updateAssignment(assignment));
+  };
   
   useEffect(() => {
     const foundAssignment = assignments.find((asmnt: any) => asmnt._id === aid);
@@ -142,16 +161,9 @@ export default function AssignmentEditor() {
         </Button></Link>
         <Button variant="danger" size="sm" className="me-1 float-end border-dark rounded-0" id="wd-save"
         onClick={() => { if (editingMode) {
-          dispatch(updateAssignment(assignment))
+          saveAssignment(assignment)
         } else {
-          dispatch(addAssignment({ 
-            title: assignment.title, 
-            description: assignment.description,
-            course: cid,
-            pts: assignment.pts,
-            due: assignment.due,
-            from: assignment.from,
-            until: assignment.until }));
+          createAssignmentForCourse()
         }
         navigate(`/Kambaz/Courses/${cid}/Assignments`);
          }}>
