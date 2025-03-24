@@ -11,10 +11,14 @@ import Session from "./Account/Session";
 import * as courseClient from "./Courses/client";
 import * as userClient from "./Account/client";
 import { useSelector } from "react-redux";
+import Enrollments from "./Courses/Enrollments";
+import { useLocation } from "react-router-dom";
 
 export default function Kambaz() {
   const [courses, setCourses] = useState<any[]>([]);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const location = useLocation();
+  
   const fetchCourses = async () => {
     try {
       const courses = await userClient.findMyCourses();
@@ -26,6 +30,13 @@ export default function Kambaz() {
   useEffect(() => {
     fetchCourses();
   }, [currentUser]);
+
+  useEffect(() => {
+    if (location.state?.refresh) {
+      fetchCourses();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state]);
 
   const [course, setCourse] = useState<any>({
     _id: "1234", name: "New Course", number: "New Number",
@@ -78,6 +89,10 @@ export default function Kambaz() {
               </ProtectedRoute>} />
             <Route path="/Calendar" element={<h1>Calendar</h1>} />
             <Route path="/Inbox" element={<h1>Inbox</h1>} />
+            <Route path="/Enrollments" element={
+              <Enrollments 
+              />} 
+              />
           </Routes>
         </div>
       </div>

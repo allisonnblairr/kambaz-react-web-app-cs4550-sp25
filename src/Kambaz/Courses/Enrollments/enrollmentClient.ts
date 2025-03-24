@@ -11,12 +11,10 @@ export const unenrollUserFromCourse = async (
   userId: string,
   courseId: string
 ) => {
-  await axios.delete(`${ENROLLMENTS_API}/${userId}/${courseId}`);
+  await axios.delete(`${ENROLLMENTS_API}/unenroll/${userId}/${courseId}`);
 };
 
-export const fetchEnrollmentsForUser = async (userId: string) => {
-  const { data } = await axios.get(
-    `${REMOTE_SERVER}/api/users/${userId}/courses`
-  );
+export const fetchAllEnrollments = async () => {
+  const { data } = await axios.get(ENROLLMENTS_API);
   return data;
 };

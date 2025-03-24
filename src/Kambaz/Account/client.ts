@@ -47,3 +47,9 @@ export const createCourse = async (course: any) => {
   );
   return data;
 };
+export const findMyEnrollments = async () => {
+  const { data } = await axiosWithCredentials.get(
+    `${USERS_API}/current/enrollments`
+  );
+  return data;
+};
