@@ -9,7 +9,10 @@ import GreenCheckmark from "../Modules/GreenCheckmark";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPencil, FaTrash } from "react-icons/fa6";
-import { deleteAssignment } from "./reducer";
+import { setAssignments, deleteAssignment } from "./reducer";
+import * as coursesClient from "../client";
+import { useEffect } from "react";
+import * as assignmentsClient from "./client";
 
 export default function Assignments() {
   const { cid } = useParams();
@@ -17,6 +20,19 @@ export default function Assignments() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const fetchAssignments = async () => {
+    const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const removeAssignment = async (assignmentId: string) => {
+    await assignmentsClient.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
+
 
   function formatDate(dateString: any) {
     const date = new Date(dateString);
@@ -39,7 +55,6 @@ export default function Assignments() {
           <BsGripVertical className="me-2 fs-3" /> ASSIGNMENTS <AssignmentControlButtons />
         </div>
         {assignments
-          .filter((assignment: any) => assignment.course === cid)
           .map((assignment: any) => (
             <li key={assignment._id} className="wd-assignment p-3 d-flex align-items-center list-group-item ps-1">
               <div className="d-flex align-items-center me-3">
@@ -60,7 +75,7 @@ export default function Assignments() {
               <div className="d-flex align-items-center ms-3 gap-2">
                {currentUser.role === 'FACULTY' &&
                 <><FaPencil onClick={() => navigate(`/Kambaz/Courses/${assignment.course}/Assignments/${assignment._id}`)} className="text-primary me-3" />
-                <FaTrash className="text-danger me-2 mb-1" onClick={() => dispatch(deleteAssignment(assignment._id))} /></>
+                <FaTrash className="text-danger me-2 mb-1" onClick={() => removeAssignment(assignment._id)} /></>
                }
                 <GreenCheckmark />
                 <IoEllipsisVertical className="fs-4" />
