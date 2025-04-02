@@ -1,28 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Row, Col, Card, Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function Dashboard(
   { courses, course, setCourse, addNewCourse,
-    deleteCourse, updateCourse }: {
+    deleteCourse, updateCourse, enrolling, setEnrolling, updateEnrollment }: {
     courses: any[]; course: any; setCourse: (course: any) => void;
     addNewCourse: () => void; deleteCourse: (course: any) => void;
-    updateCourse: () => void; })
+    updateCourse: () => void;  enrolling: boolean;
+    setEnrolling: (enrolling: boolean) => void;
+    updateEnrollment: (courseId: string, enrolled: boolean) => void; })
    {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const navigate = useNavigate();
 
   return (
       <div id="wd-dashboard">
         <h1 id="wd-dashboard-title">Dashboard</h1> 
-        <Button
-          variant="primary"
-          onClick={() => navigate(`/Kambaz/enrollments`)}
-          className="mb-3 btn btn-primary position-absolute top-0 end-0 m-3"
-        >
-          Enrollments
-        </Button>
+        <button onClick={() => setEnrolling(!enrolling)} 
+          className="mb-3 btn btn-primary position-absolute top-0 end-0 m-3" >
+            {enrolling ? "My Courses" : "All Courses"}
+        </button>
         <hr />
         <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
         { currentUser.role === 'FACULTY' &&
@@ -42,17 +40,27 @@ export default function Dashboard(
           <Row xs={1} md={5} className="g-4">
             {courses
             .map((course) => (
-              <Col className="wd-dashboard-course" style={{ width: "300px" }}>
+              <Col className="wd-dashboard-course" style={{ width: "315px" }}>
                 <Card>
                   <Link to={`/Kambaz/Courses/${course._id}/Home`}
                     className="wd-dashboard-course-link text-decoration-none text-dark" >
                     <Card.Img src={`${course.image}`} variant="top" width="100%" height={160} />
                     <Card.Body className="card-body">
-                      <Card.Title className="wd-dashboard-course-title text-nowrap overflow-hidden">
+                      <Card.Title className="wd-dashboard-course-title text-wrap">
+                        {enrolling && (
+                            <button 
+                              onClick={(event) => {
+                                event.preventDefault();
+                                updateEnrollment(course._id, !course.enrolled);
+                              }}
+                              className={`btn ${ course.enrolled ? "btn-danger" : "btn-success" } float-end`} >
+                              {course.enrolled ? "Unenroll" : "Enroll"}
+                            </button>
+                        )}
                         {course.name} </Card.Title>
                       <Card.Text className="wd-dashboard-course-description overflow-hidden" style={{ height: "100px" }}>
                         {course.description} </Card.Text>
-                      <Button variant="primary"> Go </Button>
+                      <Button variant="primary" className="me-2"> Go </Button>
                       { currentUser.role === 'FACULTY' &&
                       <><button onClick={(event) => {
                           event.preventDefault();

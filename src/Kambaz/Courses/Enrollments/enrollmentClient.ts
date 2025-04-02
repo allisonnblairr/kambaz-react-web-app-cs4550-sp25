@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// this is not used anymore (see a6)
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
 const ENROLLMENTS_API = `${REMOTE_SERVER}/api/enrollments`;
 
