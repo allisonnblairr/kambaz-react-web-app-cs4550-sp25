@@ -7,7 +7,7 @@ import ModuleControlButtons from "./ModuleControlButtons";
 import { useParams } from "react-router";
 import { setModules, addModule, editModule, updateModule, deleteModule } from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
-import * as coursesClient from "../client";
+import * as courseClient from "../client";
 import * as modulesClient from "./client";
 
 export default function Modules() {
@@ -15,34 +15,37 @@ export default function Modules() {
   const [moduleName, setModuleName] = useState("");
   const { modules } = useSelector((state: any) => state.modulesReducer);
   const dispatch = useDispatch();
-  const createModuleForCourse = async () => {
-    if (!cid) return;
-    const newModule = { name: moduleName, course: cid };
-    const module = await coursesClient.createModuleForCourse(cid, newModule);
-    dispatch(addModule(module));
-  };
-  const fetchModules = async () => {
-    const modules = await coursesClient.findModulesForCourse(cid as string);
+  const addModuleHandler = async () => {
+    const newModule = await courseClient.createModuleForCourse(cid!, {
+      name: moduleName,
+      course: cid,
+    });
+    dispatch(addModule(newModule));
+    setModuleName("");
+  }; 
+  const fetchModulesForCourse = async () => {
+    const modules = await courseClient.findModulesForCourse(cid!);
     dispatch(setModules(modules));
   };
   useEffect(() => {
-    fetchModules();
+    fetchModulesForCourse();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [cid]);
+ 
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const removeModule = async (moduleId: string) => {
+  const deleteModuleHandler = async (moduleId: string) => {
     await modulesClient.deleteModule(moduleId);
     dispatch(deleteModule(moduleId));
-  };
-  const saveModule = async (module: any) => {
+  }; 
+  const updateModuleHandler = async (module: any) => {
     await modulesClient.updateModule(module);
     dispatch(updateModule(module));
-  };
+  }; 
 
     return (
 <div>
 { currentUser.role === 'FACULTY' &&
-          <><ModulesControls moduleName={moduleName} setModuleName={setModuleName} addModule={createModuleForCourse} />
+          <><ModulesControls moduleName={moduleName} setModuleName={setModuleName} addModule={addModuleHandler} />
           <br /><br /><br /><br /></>
 }
 <ul id="wd-modules" className="list-group rounded-0">
@@ -54,18 +57,18 @@ export default function Modules() {
       {!module.editing && module.name}
       { module.editing && (
         <input className="form-control w-50 d-inline-block"
-               onChange={(e) => dispatch(
-                updateModule({ ...module, name: e.target.value })
-              )}
+               onChange={(e) =>
+                updateModuleHandler({ ...module, name: e.target.value })
+              }
                onKeyDown={(e) => {
                  if (e.key === "Enter") {
-                  saveModule({ ...module, editing: false });
+                  updateModuleHandler({ ...module, editing: false });
                  }
                }}
                defaultValue={module.name}/>
       )}
       <ModuleControlButtons moduleId={module._id}
-                  deleteModule={(moduleId) => removeModule(moduleId)}
+                  deleteModule={(moduleId) => deleteModuleHandler(moduleId)}
                   editModule={(moduleId) => dispatch(editModule(moduleId))} />
       </div>
       {module.lessons && (
@@ -75,7 +78,7 @@ export default function Modules() {
               <BsGripVertical className="me-2 fs-3" /> {lesson.name} <LessonControlButtons />
               </li>
             ))}
-            </ul>)}
-            </li>))}
-            </ul>
-            </div> )}
+        </ul>)}
+    </li>))}
+  </ul>
+</div> )}

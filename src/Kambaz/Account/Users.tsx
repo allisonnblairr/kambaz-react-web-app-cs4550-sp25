@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import PeopleTable from "../Courses/People/Table";
 import * as client from "./client";
 import { FormControl } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
+import { useSelector } from "react-redux";
 export default function Users() {
- // eslint-disable-next-line @typescript-eslint/no-explicit-any
  const [users, setUsers] = useState<any[]>([]);
  const { uid } = useParams();
+ const { currentUser } = useSelector((state: any) => state.accountReducer);
  const fetchUsers = async () => {
    const users = await client.findAllUsers();
    setUsers(users);
@@ -49,10 +51,12 @@ export default function Users() {
  };
  return (
    <div>
+      { currentUser.Role ==='ADMIN' &&
       <button onClick={createUser} className="float-end btn btn-danger wd-add-people">
         <FaPlus className="me-2" />
         Users
       </button>
+      }
      <h3>Users</h3>
      <FormControl onChange={(e) => filterUsersByName(e.target.value)} placeholder="Search people"
         className="float-start w-25 me-2 wd-filter-by-name" />

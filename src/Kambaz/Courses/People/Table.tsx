@@ -1,13 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 import PeopleDetails from "./Details";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function PeopleTable({ users = [] }: { users?: any[]}) {
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+
  return (
   <div id="wd-people-table">
-   <PeopleDetails />
+    { currentUser.Role === "ADMIN" &&
+    <PeopleDetails />
+    }
    <Table striped>
     <thead>
      <tr><th>Name</th><th>Login ID</th><th>Section</th><th>Role</th><th>Last Activity</th><th>Total Activity</th></tr>
