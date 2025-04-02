@@ -51,7 +51,7 @@ export default function Users() {
  };
  return (
    <div>
-      { currentUser.Role ==='ADMIN' &&
+      { currentUser.role ==='ADMIN' &&
       <button onClick={createUser} className="float-end btn btn-danger wd-add-people">
         <FaPlus className="me-2" />
         Users

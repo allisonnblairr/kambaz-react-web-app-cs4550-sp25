@@ -11,7 +11,7 @@ export default function PeopleTable({ users = [] }: { users?: any[]}) {
 
  return (
   <div id="wd-people-table">
-    { currentUser.Role === "ADMIN" &&
+    { currentUser.role === "ADMIN" &&
     <PeopleDetails />
     }
    <Table striped>
